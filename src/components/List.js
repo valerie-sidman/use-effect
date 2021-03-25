@@ -4,12 +4,13 @@ import Details from './Details';
 export default function List() {
   const [phonebook, setItems] = useState({
     items: [],
-    Details: null,
   });
+
+  const [details, setDetails] = useState({});
   useEffect(() => {
     async function getItems() {
       try {
-        const response = await fetch('https://raw.githubusercontent.com/netology-code/ra16-homeworks/master/hooks-context/use-effect/data/users.json');
+        const response = await fetch(process.env.REACT_APP_USERS_LIST);
         if (!response.ok) {
           throw new Error(response.message);
         }
@@ -24,7 +25,7 @@ export default function List() {
   }, []);
 
   function handleClick(info) {
-    setItems((prevItems) => ({ ...prevItems, Details: <Details info={info} /> }));
+    setDetails(() => (info));
   }
 
   return (
@@ -34,7 +35,7 @@ export default function List() {
           phonebook.items.map(o => <li key={o.id} onClick={() => handleClick(o)}>{o.name}</li>)
         }
       </ul>
-      {phonebook.Details}
+      {details.id ? <Details info={details}/> : null}
     </div>
 
 
